@@ -21,25 +21,26 @@ http://localhost/api/
 * Registrarse
     -   ```url http://localhost/user/signup```
     -   ```
-    {
-        "Name": "Jonathan",
-        "Email": "jhoropertuz@gmail.com",
-        "Password": "12345"
-    }
-    ```
-
-* Login (tendras el token necesario para consultar las canciones)
--   ```url http://localhost/user/login```
--   ```
         {
+            "Name": "Jonathan",
             "Email": "jhoropertuz@gmail.com",
             "Password": "12345"
         }
     ```
 
+* Login (tendras el token necesario para consultar las canciones)
+    -   ```url http://localhost/user/login```
+    -   ```
+            {
+                "Email": "jhoropertuz@gmail.com",
+                "Password": "12345"
+            }
+        ```
+
 * Filtrar Canciones
     - 🔴 Es necesario el token que la api te da al logiarte
     - 🔴 Debes pasa por el Header dicho Token con la  key "token"
+        ![Image text](https://github.com/jonathanRomeroP/test1-tribal/blob/devProyect/public/img/token.png)
     -  El filtrado se realiza con el siguiente endpoin
     ```url http://localhost/api/song/filter/?name=string&artist=string```
 
@@ -47,3 +48,7 @@ http://localhost/api/
         - name (nombre de la cancion)
         - artist (artista musical)
         - album (album del artista)
+
+#  <font color='red'>Rutas Activas</font>
+
+![Image text](https://github.com/jonathanRomeroP/test1-tribal/blob/devProyect/public/img/rutas.png)
