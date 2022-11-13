@@ -90,7 +90,7 @@ func GetSongClientApple(url string) (responseSongs []any) {
 		song := responseObject.Results[i]
 		mapa["IdSong"] = song["trackId"]
 		mapa["Name"] = song["trackName"]
-		mapa["artist"] = song["artistName"]
+		mapa["Artist"] = song["artistName"]
 		mapa["Duration"] = song["trackTimeMillis"]
 		mapa["Album"] = song["collectionName"]
 		mapa["Artwork"] = song["previewUrl"]
@@ -121,7 +121,7 @@ func GetSongClientChartlyrics(url string) (responseSongs []any) {
 		song := responseObject.SearchLyricResult[i]
 		mapa["IdSong"] = song.TrackId
 		mapa["Name"] = song.Song
-		mapa["artist"] = song.Artist
+		mapa["Artist"] = song.Artist
 		mapa["Duration"] = song.SongRank
 		mapa["Album"] = song.Song
 		mapa["Artwork"] = song.SongUrl

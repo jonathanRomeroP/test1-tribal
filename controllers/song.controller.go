@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"test1-tribal/services"
 
@@ -20,9 +21,13 @@ func FilterSong() gin.HandlerFunc {
 
 		song, err := services.GetSong(name, artist, album)
 		if err != nil {
-			c.JSON(http.StatusOK, services.GetSongOfAllClients(name, artist, album))
+			fmt.Println("Cancion NO esta guardada en local....")
+			song := services.GetSongOfAllClients(name, artist, album)
+			c.JSON(http.StatusOK, song)
+			go services.SaveSong(song)
 			return
 		}
+		fmt.Println("Cancion SI esta guardada en local....")
 		c.JSON(http.StatusOK, song)
 	}
 

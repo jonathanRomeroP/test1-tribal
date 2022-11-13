@@ -3,10 +3,15 @@ package services
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"strconv"
 	"test1-tribal/database"
 	"test1-tribal/models"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -18,28 +23,73 @@ type filter struct {
 
 var songCollection *mongo.Collection = database.OpenCollection(database.Client, "song")
 
-func GetSong(name string, artist string, album string) (song *models.Song, err error) {
+func GetSong(name string, artist string, album string) (songs []*models.SongAny, err error) {
 
-	//var ctx, _ = context.WithTimeout(context.TODO(), 100*time.Second)
+	var ctx, _ = context.WithTimeout(context.TODO(), 100*time.Second)
 
-	songFilter := make(map[string]interface{})
-
-	if len(name) > 0 {
-		songFilter["name"] = name
+	filter := bson.M{
+		"$or": []bson.M{
+			{
+				"Name": bson.M{
+					"$regex": primitive.Regex{
+						Pattern: name,
+						Options: "i",
+					},
+				},
+				"Artist": bson.M{
+					"$regex": primitive.Regex{
+						Pattern: artist,
+						Options: "i",
+					},
+				},
+				"Album": bson.M{
+					"$regex": primitive.Regex{
+						Pattern: album,
+						Options: "i",
+					},
+				},
+			},
+		},
 	}
 
-	if len(artist) > 0 {
-		songFilter["artist"] = artist
+	cursor, err := songCollection.Find(context.TODO(), filter)
+
+	defer cursor.Close(ctx)
+
+	for cursor.Next(ctx) {
+		var song *models.SongAny
+		cursor.Decode(&song)
+		songs = append(songs, song)
 	}
 
-	if len(album) > 0 {
-		songFilter["album"] = album
+	if songs == nil {
+		err = errors.New("No hay datos")
 	}
-	jsonStr, err := json.Marshal(songFilter)
-
-	var mapData map[string]interface{}
-	json.Unmarshal(jsonStr, &mapData)
-	err = songCollection.FindOne(context.TODO(), bson.M(mapData)).Decode(&song)
 
 	return
+}
+
+func SaveSong(song []any) {
+	for _, v := range song {
+		jsonbody, _ := json.Marshal(v)
+		student := models.Song{}
+		json.Unmarshal(jsonbody, &student)
+		idSong := student.IdSong
+		var res models.Song
+
+		errFind := songCollection.FindOne(context.TODO(), bson.D{{"IdSong", idSong}}).Decode(&res)
+
+		if errFind != nil {
+			if idSong, _ := strconv.Atoi(student.IdSong); idSong != 0 {
+				songCollection.InsertOne(context.TODO(), v)
+				fmt.Printf("este es el id %v\n", idSong)
+				fmt.Printf("el id  %v se guardo\n", idSong)
+			}
+			fmt.Println("el id es 0, por eso no se guardo")
+			continue
+		}
+
+		fmt.Printf("el id  %v ya existe\n", idSong)
+	}
+
 }

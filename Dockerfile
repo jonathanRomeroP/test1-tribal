@@ -1,4 +1,4 @@
-FROM golang:1.12.0-alpine3.9 as builder
+FROM golang:1.19-alpine as builder
 
 RUN apk add git
 
@@ -25,6 +25,7 @@ RUN mkdir /app
 WORKDIR /app/
 
 COPY --from=builder /app/main .
+COPY --from=builder /app/app.env .
 
 EXPOSE 8000
 

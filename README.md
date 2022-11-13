@@ -19,7 +19,9 @@ http://localhost/api/
 #  <font color='red'>Pasos Para Consumir La Api</font>
 
 * Registrarse
-    -   ```url http://localhost/user/signup```
+    -   ```url 
+        http://localhost/user/signup
+        ```
     -   ```
         {
             "Name": "Jonathan",
@@ -29,7 +31,9 @@ http://localhost/api/
     ```
 
 * Login (tendras el token necesario para consultar las canciones)
-    -   ```url http://localhost/user/login```
+    -   ```url
+        http://localhost/user/login
+        ```
     -   ```
             {
                 "Email": "jhoropertuz@gmail.com",
@@ -42,7 +46,9 @@ http://localhost/api/
     - 🔴 Debes pasa por el Header dicho Token con la  key "token"
         ![Image text](https://github.com/jonathanRomeroP/test1-tribal/blob/devProyect/public/img/token.png)
     -  El filtrado se realiza con el siguiente endpoin
-    ```url http://localhost/api/song/filter/?name=string&artist=string```
+    ```url 
+    http://localhost/api/song/filter/?name=string&artist=string
+    ```
 
     - Puedes pasar por query params
         - name (nombre de la cancion)
