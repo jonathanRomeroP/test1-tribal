@@ -40,7 +40,7 @@ func main() {
 	router.Use(gin.Logger())
 
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"success": "Bienvenido"})
+		c.JSON(http.StatusOK, gin.H{"success": "Bienvenido v2"})
 	})
 	routes.AuthRoutes(router)
 	routes.SongRoutes(router)
